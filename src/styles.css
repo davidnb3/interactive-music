@@ -1,0 +1,440 @@
+:root {
+  --bg: #05060c;
+  --teal: #3ee8d2;
+  --teal-dim: rgba(62, 232, 210, 0.55);
+  --text: #e9ecf5;
+  --text-dim: rgba(233, 236, 245, 0.6);
+  --text-faint: rgba(233, 236, 245, 0.35);
+  --glass: rgba(18, 22, 36, 0.55);
+  --glass-border: rgba(255, 255, 255, 0.12);
+  --font-ui: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-ui);
+  -webkit-font-smoothing: antialiased;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  background: none;
+  border: none;
+}
+
+.app {
+  position: fixed;
+  inset: 0;
+}
+
+.scene {
+  position: absolute !important;
+  inset: 0;
+}
+
+/* Everything in the UI layer is click‑through except the actual widgets. */
+.ui {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  padding: 32px 36px;
+}
+
+.ui > * {
+  pointer-events: auto;
+}
+
+/* ------------------------------- header ---------------------------------- */
+
+.header {
+  position: absolute;
+  top: 34px;
+  left: 40px;
+  user-select: none;
+}
+
+.header__title {
+  margin: 0;
+  font-size: 19px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.6);
+}
+
+.header__brand {
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.header__divider {
+  color: var(--text-faint);
+  font-weight: 300;
+}
+
+.header__sub {
+  font-weight: 500;
+  color: var(--text);
+}
+
+.header__tagline {
+  margin: 6px 0 0;
+  font-size: 17px;
+  font-weight: 500;
+  color: var(--teal);
+  text-shadow: 0 0 18px rgba(62, 232, 210, 0.45);
+}
+
+/* ------------------------------ glass panel ------------------------------ */
+
+.glass,
+.drop-card,
+.player,
+.modes {
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  border-radius: 10px;
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  box-shadow:
+    0 10px 40px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+/* ------------------------------- drop card ------------------------------- */
+
+.center {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+}
+
+.center > * {
+  pointer-events: auto;
+}
+
+.drop-card {
+  width: 320px;
+  padding: 28px 28px 22px;
+  text-align: center;
+  font-family: var(--font-mono);
+  animation: rise 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s,
+    transform 0.2s;
+}
+
+.drop-card--active {
+  border-color: var(--teal);
+  box-shadow:
+    0 10px 40px rgba(0, 0, 0, 0.45),
+    0 0 0 1px rgba(62, 232, 210, 0.3),
+    0 0 40px rgba(62, 232, 210, 0.25);
+  transform: scale(1.03);
+}
+
+.drop-card__title {
+  margin: 0 0 18px;
+  font-size: 15px;
+  letter-spacing: 0.12em;
+  color: var(--text);
+}
+
+.drop-card__button {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 20px;
+  border: 1px solid var(--teal);
+  border-radius: 6px;
+  background: rgba(62, 232, 210, 0.08);
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  box-shadow:
+    0 0 18px rgba(62, 232, 210, 0.25),
+    inset 0 0 12px rgba(62, 232, 210, 0.08);
+  transition:
+    background 0.15s,
+    box-shadow 0.15s,
+    transform 0.15s;
+}
+
+.drop-card__button:hover {
+  background: rgba(62, 232, 210, 0.16);
+  box-shadow:
+    0 0 26px rgba(62, 232, 210, 0.45),
+    inset 0 0 12px rgba(62, 232, 210, 0.12);
+  transform: translateY(-1px);
+}
+
+.drop-card__cursor {
+  color: var(--text);
+  opacity: 0.85;
+}
+
+.drop-card__preset {
+  display: block;
+  margin: 20px auto 0;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  color: var(--text-faint);
+  transition: color 0.15s;
+}
+
+.drop-card__preset:hover {
+  color: var(--teal);
+}
+
+.add-track {
+  position: absolute;
+  top: 40px;
+  right: 40px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  color: var(--text-faint);
+  padding: 8px 12px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  transition:
+    color 0.15s,
+    border-color 0.15s;
+}
+
+.add-track:hover {
+  color: var(--teal);
+  border-color: rgba(62, 232, 210, 0.35);
+}
+
+/* -------------------------------- player --------------------------------- */
+
+.player {
+  position: absolute;
+  left: 40px;
+  bottom: 36px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 10px 14px 10px 16px;
+  min-width: 300px;
+  font-family: var(--font-mono);
+}
+
+.player__info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.player__title {
+  margin: 0;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 220px;
+}
+
+.player__row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.player__status {
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  color: var(--text-faint);
+  transition: color 0.2s;
+}
+
+.player__status--live {
+  color: var(--teal);
+  text-shadow: 0 0 10px rgba(62, 232, 210, 0.5);
+}
+
+.waveform {
+  width: 96px;
+  height: 22px;
+  display: block;
+}
+
+.player__controls {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding-left: 14px;
+  border-left: 1px solid var(--glass-border);
+}
+
+.player__btn {
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  border-radius: 6px;
+  color: var(--text-dim);
+  transition:
+    color 0.15s,
+    background 0.15s;
+}
+
+.player__btn:hover:not(:disabled) {
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.player__btn:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.player__btn--main {
+  color: var(--text);
+}
+
+/* ------------------------------ mode switcher ---------------------------- */
+
+.modes {
+  position: absolute;
+  right: 40px;
+  bottom: 36px;
+  display: flex;
+  gap: 4px;
+  padding: 5px;
+  font-family: var(--font-mono);
+}
+
+.modes__btn {
+  padding: 7px 10px;
+  border-radius: 5px;
+  border: 1px solid transparent;
+  font-size: 10px;
+  letter-spacing: 0.02em;
+  color: var(--text-dim);
+  white-space: nowrap;
+  transition:
+    color 0.15s,
+    border-color 0.15s,
+    background 0.15s,
+    box-shadow 0.15s;
+}
+
+.modes__btn:hover {
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.modes__btn--active {
+  color: var(--text);
+  border-color: var(--teal);
+  background: rgba(62, 232, 210, 0.08);
+  box-shadow: 0 0 14px rgba(62, 232, 210, 0.25);
+}
+
+/* --------------------------------- hint ---------------------------------- */
+
+.hint {
+  position: absolute;
+  left: 50%;
+  bottom: 44px;
+  transform: translateX(-50%);
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  color: var(--text-faint);
+  user-select: none;
+  pointer-events: none;
+}
+
+/* ------------------------------ drag overlay ----------------------------- */
+
+.app--dragging::after {
+  content: '';
+  position: absolute;
+  inset: 12px;
+  border: 1px dashed rgba(62, 232, 210, 0.5);
+  border-radius: 14px;
+  pointer-events: none;
+  animation: pulse 1.2s ease-in-out infinite;
+}
+
+/* ------------------------------- animations ------------------------------ */
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* ------------------------------- responsive ------------------------------ */
+
+@media (max-width: 860px) {
+  .header {
+    top: 22px;
+    left: 20px;
+  }
+  .header__title {
+    font-size: 15px;
+  }
+  .header__tagline {
+    font-size: 14px;
+  }
+  .player {
+    left: 16px;
+    right: 16px;
+    bottom: 84px;
+    min-width: 0;
+  }
+  .modes {
+    left: 16px;
+    right: 16px;
+    bottom: 16px;
+    overflow-x: auto;
+    justify-content: flex-start;
+  }
+  .hint,
+  .add-track {
+    display: none;
+  }
+}
